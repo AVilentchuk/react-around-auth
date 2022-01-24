@@ -31,14 +31,14 @@
   <p align="center">
     adaptive site creation (JS, CSS, HTML, React)
     <br />
-    <a href="hhttps://github.com/AVilentchuk/around-react"><strong>Explore the docs »</strong></a>
+    <a href="hhttps://github.com/AVilentchuk/react-around-auth"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://avilentchuk.github.io/around-react/">View on github pages</a>
+    <a href="https://avilentchuk.github.io/react-around-auth/">View on github pages</a>
     ·
-    <a href="https://github.com/AVilentchuk/around-react/issues">Report Bug</a>
+    <a href="https://github.com/AVilentchuk/react-around-auth/issues">Report Bug</a>
     ·
-    <a href="https://github.com/AVilentchuk/around-react/issues">Request Feature</a>
+    <a href="https://github.com/AVilentchuk/react-around-auth/issues">Request Feature</a>
   </p>
 </p>
 
