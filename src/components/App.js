@@ -189,15 +189,8 @@ function App() {
   useEffect(async () => {
     const validation = await auth.checkToken();
     if (validation) {
-      try {
-        {
-          setLoggedUser(validation.data.email);
-          setIsUserLogged(true);
-          console.log(loggedUser);
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      setLoggedUser(validation.data.email);
+      setIsUserLogged(true);
       getCards();
       getUserInfo();
     } else {
