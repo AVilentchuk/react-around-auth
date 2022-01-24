@@ -1,10 +1,11 @@
+import { useKey } from "../hooks/useKey";
+
 const ImagePopup = ({
   navigation,
   targetObj,
   isOpen,
   onClose,
   id,
-  useKey,
   goLeft,
   goRight,
 }) => {

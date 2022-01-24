@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { useKey } from "../hooks/useKey";
 import PopupWithForm from "./PopupWithForm";
 
-const AddPlacePopup = ({ isOpen, onClose, addNewCard, useKey }) => {
+const AddPlacePopup = ({ isOpen, onClose, addNewCard }) => {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
 

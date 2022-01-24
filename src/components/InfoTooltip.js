@@ -24,11 +24,7 @@ const InfoTooltip = ({ onClose, isOpen, id, status, statusMessage }) => {
   }, [statusMessage, status]);
 
   return (
-    <div
-      // className={`popup ${isOpen ? "popup_active" : ""}`}
-      className={`popup ${isOpen ? "popup_active" : ""} `}
-      onClick={onClose}
-    >
+    <div className={`popup ${isOpen ? "popup_active" : ""} `} onClick={onClose}>
       <div
         className='popup__window'
         id={id}
@@ -39,18 +35,13 @@ const InfoTooltip = ({ onClose, isOpen, id, status, statusMessage }) => {
         <button
           className='button button_type_close'
           type='button'
-          aria-label='Close win dow'
+          aria-label='Close window'
           onClick={onClose}
         ></button>
         <div className={`tooltip ${handleTooltipImage()} `}>
           {status === null && spinner}
         </div>
-        <h2
-          className='popup__title popup__title_tooltip'
-          style={{ margin: "0px auto 50px", textAlign: "center" }}
-        >
-          {toolTipMessage}
-        </h2>
+        <h2 className='popup__title popup__title_tooltip'>{toolTipMessage}</h2>
       </div>
     </div>
   );

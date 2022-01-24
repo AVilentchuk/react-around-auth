@@ -22,19 +22,20 @@ const Register = ({
   const formRef = useRef();
   const buttonRef = createRef();
 
+  const errorHandle = (err) => {
+    return err.json().then((parsedError) => {
+      setStatusMessage(parsedError.message || parsedError.error);
+      setStatus(false);
+    });
+  };
+
   const handleSubmit = (e) => {
-    return auth
-      .register(email, password)
-      .then((res) => {
-        console.log(res);
-        if (res.ok) {
-          handleRegister();
-        }
-      })
-      .catch(async (error) => {
-        const parsedError = await error.json();
-        return Promise.reject(parsedError.message || parsedError.error);
-      });
+    return auth.register(email, password).then((res) => {
+      console.log(res);
+      if (res.ok) {
+        handleRegister();
+      }
+    });
   };
   useEffect(() => {
     if (loginStatus) {
@@ -79,11 +80,7 @@ const Register = ({
                 setStatusMessage("Registered");
                 setStatus(true);
               },
-              onError: (err) => {
-                // console.log(err);
-                setStatusMessage(err);
-                setStatus(false);
-              },
+              onError: errorHandle,
               callbackEnd: () => {
                 onClose();
                 form.resetValidation();

@@ -66,12 +66,12 @@
 @import url("./blocks/tooltip/_style/tooltip_success.css");
 @import url("./blocks/tooltip/_style/tooltip_failure.css");
 @import url("./blocks/tooltip/_spinner/tooltip_spinner.css");
-/* @import url("./blocks/form/__button-submit/form__button-submit.css"); */
 @import url("./blocks/navigation-arrow/navigation-arrow.css");
 @import url("./blocks/navigation-arrow/_left/navigation-arrow_left.css");
 @import url("./blocks/navigation-arrow/_right/navigation-arrow_right.css");
 @import url("./blocks/navigation-arrow/_animated/navigation-arrow_animated.css");
 @import url("./blocks/popup/__title/popup__title.css");
+@import url("./blocks/popup/__title/_type/popup__title_tooltip.css");
 @import url("./blocks/popup/__form/popup__form.css");
 @import url("./blocks/popup/__form-input/popup__form-input.css");
 @import url("./blocks/popup/__img/popup__img.css");

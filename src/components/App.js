@@ -1,6 +1,7 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { Route, Routes, useNavigate, Navigate, Link } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
+
 import api from "../utils/api";
 import Header from "./Header";
 import Main from "./Main";
@@ -16,21 +17,6 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import * as auth from "../utils/auth";
 
-//mousePosition
-export const useMousePosition = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const setFromEvent = (e) => setPosition({ x: e.clientX, y: e.clientY });
-    window.addEventListener("mousemove", setFromEvent);
-
-    return () => {
-      window.removeEventListener("mousemove", setFromEvent);
-    };
-  }, []);
-
-  return position;
-};
 function App() {
   //isOpened
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -48,27 +34,8 @@ function App() {
   const [cardsData, setCardsData] = useState([]);
   const [isUserLogged, setIsUserLogged] = useState(false);
   const [loggedUser, setLoggedUser] = useState("");
+  const navigate = useNavigate();
 
-  //function to add event listeners
-  function useKey(key, callback, condition) {
-    const callbackRef = useRef(callback);
-    useEffect(() => {
-      callbackRef.current = callback;
-    });
-
-    useEffect(() => {
-      if (!condition) {
-        return;
-      }
-      function handle(event) {
-        if (event.code === key) {
-          callbackRef.current(event);
-        }
-      }
-      document.addEventListener("keydown", handle);
-      return () => document.removeEventListener("keydown", handle);
-    }, [key, condition]);
-  }
   //<<START>>data fetching functions <<START>>
   const getUserInfo = async () => {
     try {
@@ -122,27 +89,16 @@ function App() {
 
   const handleDeleteCard = async () => {
     const id = selectedCard._id;
-    try {
-      await api.deleteCardPost(id);
-      return setCardsData(cardsData.filter((card) => card._id !== id));
-    } catch (error) {
-      return Promise.reject(error);
-    }
+    await api.deleteCardPost(id);
+    return setCardsData(cardsData.filter((card) => card._id !== id));
   };
 
   const handleAddCard = async (card) => {
-    try {
-      await api
-        .postNewCard(card)
-        .then((res) =>
-          setCardsData((Cards) => {
-            return [res].concat(Cards);
-          })
-        )
-        .catch((error) => Promise.reject(error));
-    } catch (error) {
-      return Promise.reject(error);
-    }
+    return await api.postNewCard(card).then((res) =>
+      setCardsData((Cards) => {
+        return [res].concat(Cards);
+      })
+    );
   };
   //<<END>>Card actions handles<<END>>
   //<<START>>Window openers & closers<<START>>
@@ -185,29 +141,15 @@ function App() {
   //<<END>>Window openers & closers<<END>>
   //<<START>>Profile updating handlers<<START>>
   const handleUpdateUserData = async (data) => {
-    try {
-      return api
-        .updateProfile(data)
-        .then((res) => {
-          setCurrentUser(res);
-        })
-        .catch((error) => Promise.reject(error));
-    } catch (error) {
-      return Promise.reject(error);
-    }
+    return await api.updateProfile(data).then((res) => {
+      setCurrentUser(res);
+    });
   };
 
   const handleUpdateAvatarImage = async (data) => {
-    try {
-      return await api
-        .updateProfilePhoto(data.avatar)
-        .then((res) => {
-          setCurrentUser(res);
-        })
-        .catch((error) => Promise.reject(error));
-    } catch (error) {
-      return Promise.reject(error);
-    }
+    return await api.updateProfilePhoto(data.avatar).then((res) => {
+      setCurrentUser(res);
+    });
   };
   //<<END>>Profile updating handlers<<END>>
   //<<START>>Navigation handlers<<START>>
@@ -227,7 +169,7 @@ function App() {
   const handleToolTipOpen = (details) => {
     setIsToolTipOpen(true);
   };
-  const navigate = useNavigate();
+
   const handleLogin = (data) => {
     data && console.log(data);
     setIsUserLogged(true);
@@ -256,14 +198,11 @@ function App() {
       } catch (error) {
         console.log(error);
       }
+      getCards();
+      getUserInfo();
     } else {
       if (window.location.pathname === ("/" || null)) navigate("/login");
     }
-  }, []);
-
-  useEffect(() => {
-    getCards();
-    getUserInfo();
   }, []);
 
   return (
@@ -307,7 +246,7 @@ function App() {
             <Route
               path='/'
               element={
-                <ProtectedRoute>
+                <ProtectedRoute check={isUserLogged}>
                   <Main
                     onEditProfileClick={handleEditProfileClick}
                     onAddPlaceClick={handleAddPlaceClick}
@@ -324,21 +263,18 @@ function App() {
                     isOpen={isEditProfilePopupOpen}
                     onClose={handleClose}
                     updateCurrentUser={handleUpdateUserData}
-                    useKey={useKey}
                   />
 
                   <AddPlacePopup
                     isOpen={isPlacePopupOpen}
                     onClose={handleClose}
                     addNewCard={handleAddCard}
-                    useKey={useKey}
                   />
 
                   <EditAvatarPopup
                     isOpen={isEditAvatarPopupOpen}
                     onClose={handleClose}
                     updateCurrentUser={handleUpdateAvatarImage}
-                    useKey={useKey}
                   />
 
                   <ImagePopup
@@ -347,7 +283,6 @@ function App() {
                     id='w-img'
                     targetObj={selectedCard}
                     navigation={true}
-                    useKey={useKey}
                     goLeft={goLeft}
                     goRight={goRight}
                   />
@@ -357,7 +292,6 @@ function App() {
                     id='w-piclrg'
                     targetObj={currentUser}
                     navigation={false}
-                    useKey={useKey}
                     goLeft={goLeft}
                     goRight={goRight}
                   />

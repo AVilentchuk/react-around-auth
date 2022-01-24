@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { useKey } from "../hooks/useKey";
 import PopupWithForm from "./PopupWithForm";
-const EditProfilePopup = ({ isOpen, onClose, updateCurrentUser, useKey }) => {
+const EditProfilePopup = ({ isOpen, onClose, updateCurrentUser }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const currentUser = useContext(CurrentUserContext);
@@ -14,9 +15,7 @@ const EditProfilePopup = ({ isOpen, onClose, updateCurrentUser, useKey }) => {
   }, [currentUser, isOpen]);
 
   const formSubmit = () => {
-    return updateCurrentUser(
-      Object.assign({}, currentUser, { name: name, about: description })
-    );
+    return updateCurrentUser({ name: name, about: description });
   };
 
   useKey("Escape", onClose, isOpen);

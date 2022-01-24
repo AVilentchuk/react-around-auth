@@ -1,4 +1,8 @@
 export const BASE_URL = "https://register.nomoreparties.co";
+const CheckResponse = (response) => {
+  if (response.ok) return response.json();
+  return Promise.reject(response);
+};
 
 export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {
@@ -7,14 +11,7 @@ export const register = (email, password) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
-  })
-    .then((response) => {
-      if (response.ok) return response.json();
-      return Promise.reject(response);
-    })
-    .catch((err) => {
-      return Promise.reject(err);
-    });
+  }).then((response) => CheckResponse(response));
 };
 
 export const authorize = (email, password) => {
@@ -25,16 +22,10 @@ export const authorize = (email, password) => {
     },
     body: JSON.stringify({ email, password }),
   })
-    .then((response) => {
-      if (response.ok) return response.json();
-      return Promise.reject(response);
-    })
+    .then((response) => CheckResponse(response))
     .then((data) => {
       localStorage.setItem("jwt", data.token);
       return data;
-    })
-    .catch((err) => {
-      return Promise.reject(err);
     });
 };
 
@@ -47,11 +38,5 @@ export const checkToken = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       },
-    }).then(async (res) => {
-      try {
-        return await res.json();
-      } catch (error) {
-        console.log(error);
-      }
-    });
+    }).then((res) => CheckResponse(res));
 };

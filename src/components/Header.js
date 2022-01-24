@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import logo from "../assets/icons/Logo_vector.svg";
 
 const Header = (props) => {
-  const { loginStatus, handleLogout, navigate, userEmail } = props;
+  const { loginStatus, handleLogout, userEmail } = props;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileSize, setIsMobileSize] = useState(false);
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const navigate = useNavigate();
   //<<START>>Helper functions <<START>>
   const handleResize = () => {
     setDimensions({
@@ -22,8 +25,8 @@ const Header = (props) => {
       handleLogout();
       return;
     }
-    if (window.location.pathname === "/login") navigate("/register");
-    else navigate("/login");
+    if (window.location.pathname === "/login") return navigate("/register");
+    else return navigate("/login");
   };
   //<<END>>Helper functions <<END>>
   //<<START>>Conditional variables & elements <<START>>
@@ -41,7 +44,7 @@ const Header = (props) => {
 
   const loggedEmail = (
     <p className='header__email'>
-      {loginStatus && userEmail != "" && userEmail}
+      {loginStatus && userEmail !== "" && userEmail}
     </p>
   );
 
@@ -91,7 +94,6 @@ const Header = (props) => {
       setIsMobileSize(false);
       setIsMenuOpen(false);
     }
-    console.log(isMobileSize);
   }, [dimensions]);
 
   useEffect(() => {

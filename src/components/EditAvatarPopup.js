@@ -1,8 +1,9 @@
 import { useContext, useEffect, useRef } from "react";
 import PopupWithForm from "./PopupWithForm";
+import { useKey } from "../hooks/useKey";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-const EditAvatarPopup = ({ isOpen, onClose, updateCurrentUser, useKey }) => {
+const EditAvatarPopup = ({ isOpen, onClose, updateCurrentUser }) => {
   const currentUser = useContext(CurrentUserContext);
   const avatarInput = useRef();
 
@@ -12,9 +13,7 @@ const EditAvatarPopup = ({ isOpen, onClose, updateCurrentUser, useKey }) => {
   }, [currentUser, isOpen]);
 
   const formSubmit = () => {
-    return updateCurrentUser(
-      Object.assign({}, currentUser, { avatar: avatarInput.current.value })
-    );
+    return updateCurrentUser({ avatar: avatarInput.current.value });
   };
 
   useKey("Escape", onClose, isOpen);

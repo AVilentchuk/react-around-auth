@@ -21,19 +21,20 @@ const Login = ({
   const formRef = useRef();
   const buttonRef = createRef();
 
+  const errorHandle = (err) => {
+    return err.json().then((parsedError) => {
+      setStatusMessage(parsedError.message || parsedError.error);
+      setStatus(false);
+    });
+  };
+
   const handleSubmit = (e) => {
-    return auth
-      .authorize(email, password)
-      .then((data) => {
-        if (data.token) {
-          setEmail(" ");
-          setPassword(" ");
-        }
-      })
-      .catch(async (error) => {
-        const parsedError = await error.json();
-        return Promise.reject(parsedError.message || parsedError.error);
-      });
+    return auth.authorize(email, password).then((data) => {
+      if (data.token) {
+        setEmail(" ");
+        setPassword(" ");
+      }
+    });
   };
 
   useEffect(() => {
@@ -80,11 +81,7 @@ const Login = ({
                 setStatus(true);
                 handleLogin(email);
               },
-              onError: (err) => {
-                console.log(err);
-                setStatusMessage(err);
-                setStatus(false);
-              },
+              onError: errorHandle,
               callbackEnd: () => {
                 onClose();
                 form.resetValidation();

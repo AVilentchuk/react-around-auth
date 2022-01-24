@@ -11,6 +11,9 @@ class FormValidator {
       },
       settings
     );
+    this._submitButton = formElement.querySelector(
+      `.${this._settings.submitSelector}`
+    );
     this._formElement = formElement;
   }
   //<<START>>public methods of form validation.<<START>>
@@ -41,15 +44,14 @@ class FormValidator {
   };
   //Controls the status of the submit button, gets form inputs status from checkIfInputValid
   _controlSubmit = (formStatus) => {
-    const { submitSelector, disabledButton } = this._settings;
-    const submitButton = this._formElement.querySelector(`.${submitSelector}`);
+    const { disabledButton } = this._settings;
 
     if (formStatus) {
-      submitButton.classList.add(disabledButton);
-      submitButton.setAttribute("disabled", true);
+      this._submitButton.classList.add(disabledButton);
+      this._submitButton.setAttribute("disabled", true);
     } else {
-      submitButton.classList.remove(disabledButton);
-      submitButton.removeAttribute("disabled");
+      this._submitButton.classList.remove(disabledButton);
+      this._submitButton.removeAttribute("disabled");
     }
   };
   _checkIfInputValid = (evt) => {
